@@ -1,11 +1,11 @@
 version: "3"
 services:
-  datadog:
+  datadog-agent:
     image: datadog/agent:latest
     environment:
       DD_APM_ENABLED: "true"
       DD_APM_NON_LOCAL_TRAFFIC: "true"
-      DD_TAGS: "env:dev"
+      DD_TAGS: env:dev
       DD_API_KEY: $DD_API_KEY
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -17,6 +17,8 @@ services:
     ports:
       - "5000:80"
     environment:
-      TRACING_HOST: "datadog"
-      TRACING_BATCH_SIZE: "1"
-      TRACING_SYNC_THRESHOLD: "10"
+      TRACING_BATCH_SIZE: 1
+      TRACING_SYNC_THRESHOLD: 10
+      DD_TRACE_AGENT_URL: http://datadog-agent:8126
+      DD_SERVICE_NAME: datadog-test
+      DD_ADONET_ENABLED: "false"
